@@ -19,6 +19,10 @@ contract MultiCollectible is
     event RequestCollectible(uint256 requestId, address owner, uint256 amount);
     event MintedCollectible(address owner, uint256 breed, uint256 amount);
 
+    // Contract name and symbol
+    string public name;
+    string public symbol;
+
     // init variables
     AggregatorV3Interface internal _dataFeed;
     VRFCoordinatorV2Interface internal _coordinator;
@@ -48,12 +52,17 @@ contract MultiCollectible is
     uint32 _numWords = 1; // number of random words to retrieve
 
     constructor(
+        string memory _name,
+        string memory _symbol,
         address _dataFeedAddress,
         address _coordinatorAddress,
         uint64 _subscriptionId,
         bytes32 _keyHash,
         string memory _baseUri
     ) VRFConsumerBaseV2(_coordinatorAddress) ERC1155(_baseUri) {
+        // init. contract info
+        name = _name;
+        symbol = _symbol;
         // init. chainlink price feed (dynamic data feed address)
         _dataFeed = AggregatorV3Interface(_dataFeedAddress);
         // init VRF v2 coordinator

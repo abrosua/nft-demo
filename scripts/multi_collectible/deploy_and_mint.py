@@ -20,12 +20,16 @@ def deploy():
     # pin the assets to IPFS and obtain the base token URI
     base_uri = f"ipfs://{pin_metadata_to_ipfs()}/"
     print(f"The ERC1155 token base URI is available here: '{base_uri}")
+    token_name = "Puppies Multi Token"
+    token_symbol = "PMT"
 
     # get the VRF subscription ID
     subscription_id = get_subscription()
     key_hash = config["networks"][network_id]["key_hash"]  # aka Gas Lane
     # deploy the collectible
     multi_collectible = MultiCollectible.deploy(
+        token_name,
+        token_symbol,
         get_contract(contract_name="eth_usd_price_feed").address,
         get_contract(contract_name="vrf_coordinator").address,
         subscription_id,
